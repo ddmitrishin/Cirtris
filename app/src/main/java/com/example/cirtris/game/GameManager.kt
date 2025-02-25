@@ -1,18 +1,17 @@
 package com.example.cirtris.game
 
-import Shape
+import com.example.cirtris.model.Shape
 import com.example.cirtris.utils.ShapeGenerator
 
 class GameManager(
-    private val gameField: GameField = GameField(),
-    private val shapeGenerator: ShapeGenerator = ShapeGenerator()
+    private val gameField: GameField,
+    private val shapeGenerator: ShapeGenerator
 ) {
     var currentShape: Shape = shapeGenerator.generate()
     var nextShape: Shape = shapeGenerator.generate()
     var score: Int = 0
     var level: Int = 1
     var gameOver: Boolean = false
-
     private val rings: Int get() = gameField.rings
     private val sectors: Int get() = gameField.sectors
 
@@ -30,7 +29,7 @@ class GameManager(
             tempShape.blocks[i] = newRing to sector
         }
 
-        if (canMove && !gameField.isCollision(tempShape)) {
+        if (canMove && isValidShape(tempShape) && !gameField.isCollision(tempShape)) {
             currentShape = tempShape
         } else {
             gameField.placeShape(currentShape)
@@ -76,8 +75,14 @@ class GameManager(
             }
         }
 
-        if (isValid && !gameField.isCollision(tempShape)) {
+        if (isValid && isValidShape(tempShape) && !gameField.isCollision(tempShape)) {
             currentShape = tempShape
+        }
+    }
+
+    private fun isValidShape(shape: Shape): Boolean {
+        return shape.blocks.all { (ring, sector) ->
+            ring in 0 until rings && sector in 0 until sectors
         }
     }
 }

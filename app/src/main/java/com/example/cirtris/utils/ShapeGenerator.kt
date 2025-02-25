@@ -43,7 +43,7 @@ class ShapeGenerator {
     private fun createStraight(): Shape {
         return Shape(
             mutableListOf(
-                4 to 0,  // Внешнее кольцо (индекс 4)
+                4 to 0,  // Outer ring (index 4)
                 4 to 1,
                 4 to 2,
                 4 to 3
