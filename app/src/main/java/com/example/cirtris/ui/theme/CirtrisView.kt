@@ -2,7 +2,6 @@ package com.example.cirtris.ui.theme
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -26,7 +25,12 @@ class CirtrisView(context: Context) : SurfaceView(context), Runnable {
                 pause()
             }
 
-            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+            override fun surfaceChanged(
+                holder: SurfaceHolder,
+                format: Int,
+                width: Int,
+                height: Int
+            ) {
                 // Обновление размеров
             }
         })
@@ -40,10 +44,11 @@ class CirtrisView(context: Context) : SurfaceView(context), Runnable {
 
     override fun run() {
         while (isRunning) {
-            if (!holder.surface.isValid) continue
-            update()
+            if (!gameOver) {
+                update()
+            }
             draw()
-            Thread.sleep((500 / gameManager.level).toLong())
+            Thread.sleep(50) // Задержка для контроля скорости игры
         }
     }
 
@@ -69,12 +74,10 @@ class CirtrisView(context: Context) : SurfaceView(context), Runnable {
             // Отрисовка фигур
             holder.unlockCanvasAndPost(canvas)
         }
-        Log.d("Cirtris", "Drawing canvas")
     }
 
     private fun update() {
         gameManager.update()
-        Log.d("Cirtris", "Updating...")
     }
 
     private var touchStartX = 0f

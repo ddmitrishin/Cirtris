@@ -1,6 +1,6 @@
 package com.example.cirtris.game
 
-import com.example.cirtris.model.Shape
+import Shape
 import com.example.cirtris.utils.ShapeGenerator
 
 class GameManager(

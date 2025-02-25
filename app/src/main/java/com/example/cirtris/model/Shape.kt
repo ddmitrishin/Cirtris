@@ -1,15 +1,28 @@
-package com.example.cirtris.model
+import android.os.Parcel
+import android.os.Parcelable
 
 data class Shape(
-    val blocks: MutableList<Pair<Int, Int>>, // (ring, sector)
-    val color: Int
-) {
-    fun rotate(clockwise: Boolean = true) {
-        blocks.forEachIndexed { i, (ring, sector) ->
-            blocks[i] = if (clockwise)
-                Pair(ring, (sector + 1) % 12)
-            else
-                Pair(ring, (sector - 1 + 12) % 12)
+    val blocks: List<Pair<Int, Int>> = emptyList()
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        blocks = parcel.createTypedArrayList(Pair.CREATOR) ?: emptyList()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeTypedList(blocks)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Shape> {
+        override fun createFromParcel(parcel: Parcel): Shape {
+            return Shape(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Shape?> {
+            return arrayOfNulls(size)
         }
     }
 }
